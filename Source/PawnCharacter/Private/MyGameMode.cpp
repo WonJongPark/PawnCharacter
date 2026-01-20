@@ -1,5 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MyGameMode.h"
 
+#include "MyPlayerController.h"
+#include "ThirdPersonPawn.h"
+
+AMyGameMode::AMyGameMode()
+{
+	DefaultPawnClass = AThirdPersonPawn::StaticClass();
+	PlayerControllerClass = AMyPlayerController::StaticClass();
+}

@@ -4,6 +4,11 @@
 #include "GameFramework/Pawn.h"
 #include "ThirdPersonPawn.generated.h"
 
+class UArrowComponent;
+class UCameraComponent;
+class USpringArmComponent;
+class UCapsuleComponent;
+
 UCLASS()
 class PAWNCHARACTER_API AThirdPersonPawn : public APawn
 {
@@ -11,6 +16,21 @@ class PAWNCHARACTER_API AThirdPersonPawn : public APawn
 
 public:
 	AThirdPersonPawn();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<UCapsuleComponent> CapsuleComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<UArrowComponent> ArrowComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
+	TObjectPtr<USpringArmComponent> SpringArmComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	TObjectPtr<UCameraComponent> CameraComp;
 
 protected:
 	virtual void BeginPlay() override;
