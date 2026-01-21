@@ -27,7 +27,7 @@ AThirdPersonPawn::AThirdPersonPawn()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->TargetArmLength = 200.f;
-	SpringArmComp->bUsePawnControlRotation = false;
+	SpringArmComp->bUsePawnControlRotation = true;
 	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
@@ -45,10 +45,8 @@ void AThirdPersonPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	// 1. 현재 폰의 속도를 가져옵니다.
 	FVector Velocity = GetVelocity();
-
-	// 2. 폰이 움직이고 있는지 확인합니다 (속도가 0에 가깝지 않다면)
+	
 	if (!Velocity.IsNearlyZero())
 	{
 		FRotator TargetRotation = Velocity.Rotation();
