@@ -9,6 +9,8 @@ class UCameraComponent;
 class USpringArmComponent;
 class UCapsuleComponent;
 
+struct FInputActionValue;
+
 UCLASS()
 class PAWNCHARACTER_API AThirdPersonPawn : public APawn
 {
@@ -35,6 +37,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	
+	UFUNCTION()
+	void Move(const FInputActionValue& Value);
+	
+	UFUNCTION()
+	void Look(const FInputActionValue& Value);
 	
 };
