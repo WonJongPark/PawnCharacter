@@ -8,6 +8,7 @@ class UArrowComponent;
 class UCameraComponent;
 class USpringArmComponent;
 class UCapsuleComponent;
+class UFloatingPawnMovement;
 
 struct FInputActionValue;
 
@@ -22,7 +23,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UCapsuleComponent> CapsuleComp;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	TObjectPtr<UArrowComponent> ArrowComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TObjectPtr<UCameraComponent> CameraComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	TObjectPtr<UFloatingPawnMovement> MovementComponent;
 
 protected:
 	virtual void BeginPlay() override;
