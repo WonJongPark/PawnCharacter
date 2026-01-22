@@ -26,13 +26,17 @@ AFlyingPawn::AFlyingPawn()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->TargetArmLength = 500.f;
-	SpringArmComp->bUsePawnControlRotation = true;
+	SpringArmComp->bUsePawnControlRotation = false;
+	SpringArmComp->bInheritPitch = false;
+	SpringArmComp->bInheritRoll = false;
+	SpringArmComp->bInheritYaw = true;
 	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComp->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
 	CameraComp->bUsePawnControlRotation = false;
 	
 	MoveSpeed = 10.0f;
+	RotationSpeed = 50.f;
 }
 
 void AFlyingPawn::BeginPlay()
@@ -103,18 +107,37 @@ void AFlyingPawn::Move(const FInputActionValue& Value)
 	if (!FMath::IsNearlyZero(MoveInput.X))
 	{
 		FVector DeltaLocation(MoveInput.X * MoveSpeed, 0.f, 0.f);
-		AddActorLocalOffset(DeltaLocation);
+		AddActorLocalOffset(DeltaLocation, true);
 	}
 	
 	if (!FMath::IsNearlyZero(MoveInput.Y))
 	{
 		FVector DeltaLocation(0.f, MoveInput.Y * MoveSpeed, 0.f);
-		AddActorLocalOffset(DeltaLocation);
+		AddActorLocalOffset(DeltaLocation, true);
 	}
 }
 
 void AFlyingPawn::Look(const FInputActionValue& Value)
 {
+	if(!Controller) return;
+	
+	FVector2D LookInput = Value.Get<FVector2D>();
+	float DeltaTime = GetWorld()->GetDeltaSeconds();
+	
+	FRotator DeltaRotation = FRotator::ZeroRotator;
+	
+	
+	if (!FMath::IsNearlyZero(LookInput.X))
+	{
+		DeltaRotation.Yaw = LookInput.X * RotationSpeed * DeltaTime;
+	}
+	
+	if (!FMath::IsNearlyZero(LookInput.Y))
+	{
+		DeltaRotation.Pitch = LookInput.Y * RotationSpeed * DeltaTime;
+	}
+	
+	AddActorLocalRotation(DeltaRotation);
 }
 
 void AFlyingPawn::UpDown(const FInputActionValue& Value)
@@ -126,11 +149,23 @@ void AFlyingPawn::UpDown(const FInputActionValue& Value)
 	if (!FMath::IsNearlyZero(MoveInput.X))
 	{
 		FVector DeltaLocation(0.f, 0.f, MoveInput.X * MoveSpeed);
-		AddActorLocalOffset(DeltaLocation);
+		AddActorLocalOffset(DeltaLocation, true);
 	}
 }
 
 void AFlyingPawn::Roll(const FInputActionValue& Value)
 {
+	if (!Controller) return;
+	
+	float RollInput = Value.Get<float>();
+	float DeltaTime = GetWorld()->GetDeltaSeconds();
+	FRotator DeltaRotation = FRotator::ZeroRotator;
+	
+	if (!FMath::IsNearlyZero(RollInput))
+	{
+		DeltaRotation.Roll = RollInput * RotationSpeed * DeltaTime;
+	}
+	
+	AddActorLocalRotation(DeltaRotation);
 }
 
